@@ -9,7 +9,7 @@ class DictionaryInitializer
     count = 0
 
     File.open(txt_file). each do |line|
-      Word.create!(word: line.downcase)
+      Word.create!(word: line.strip.downcase)
 
       puts "Word #{count} created"
       count += 1

@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :word do
-    word Faker::StarWars.unique.planet.downcase
+    word Faker::Lorem.unique.word.downcase
   end
 end

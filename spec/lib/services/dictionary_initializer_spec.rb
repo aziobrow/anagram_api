@@ -19,8 +19,8 @@ describe DictionaryInitializer do
     it "converts words to lowercase" do
       initializer.create_dictionary
 
-      expect(Word.all).to include('zebra')
-      expect(Word.all).not_to include('Zebra')
+      expect(Word.pluck(:word)).to include('zebra')
+      expect(Word.pluck(:word)).not_to include('Zebra')
     end
   end
 end

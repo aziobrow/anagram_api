@@ -6,6 +6,8 @@ Rails.application.routes.draw do
           delete :destroy
         end
       end
+
+      resources :anagrams, param: :word, only: [:show]
     end
   end
 end

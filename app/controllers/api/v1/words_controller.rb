@@ -12,6 +12,14 @@ class Api::V1::WordsController < ApplicationController
     render status: :unprocessable_entity, json: creator.errors
   end
 
+  def destroy
+    if params[:word]
+      Word.find(params[:word]).delete
+    else
+      Word.destroy_all
+    end
+  end
+
   private
 
   def word_params

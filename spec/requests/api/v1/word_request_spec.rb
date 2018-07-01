@@ -5,11 +5,10 @@ describe Api::V1::WordsController do
     context 'when params are valid' do
       let(:valid_params) { { words: ['read', 'test'] } }
 
-      xit 'should respond successfully' do
+      it 'should respond successfully' do
         do_post(valid_params)
 
         expect(response).to be_success
-        expect(response).to respond_with_content_type(:json)
       end
 
       it 'should respond with appropriate body' do

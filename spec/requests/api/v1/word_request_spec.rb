@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::WordsController do
   describe 'POST #create' do
     context 'when params are valid' do
-      let(:valid_params) { { words: ['read', 'test'] } }
+      let(:valid_params) { { words: ['read', 'test'] }.to_json }
 
       it 'should respond successfully' do
         do_post(valid_params)
@@ -30,7 +30,7 @@ describe Api::V1::WordsController do
     end
 
     context 'when params are invalid' do
-      let(:invalid_params) { { words: ['read', 'test!', 'test?'] } }
+      let(:invalid_params) { { words: ['read', 'test!', 'test?'] }.to_json }
 
       it 'should respond unsuccessfully' do
         do_post(invalid_params)

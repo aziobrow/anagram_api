@@ -15,6 +15,6 @@ class Api::V1::WordsController < ApplicationController
   private
 
   def word_params
-    params.require(:words)
+    JSON.parse(request.raw_post)['words']
   end
 end

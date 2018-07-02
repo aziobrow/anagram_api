@@ -60,4 +60,46 @@ describe Api::V1::WordsController do
       post '/api/v1/words.json', params: params
     end
   end
+
+  describe 'DELETE #destroy' do
+    describe 'when deleting one word' do
+      let!(:word_to_delete) { FactoryBot.create(:word) }
+
+      it 'should respond successfully' do
+        do_delete
+
+        expect(response).to be_success
+      end
+
+      it 'should remove word' do
+        expect {
+          do_delete
+        }.to change(Word, :count).by(-1)
+      end
+
+      def do_delete
+        delete '/api/v1/words.json', params: { word: word_to_delete.word }
+      end
+    end
+
+    describe 'when deleting all words' do
+      let!(:words_to_delete) { FactoryBot.create_list(:word, 3) }
+
+      it 'should respond successfully' do
+        do_delete
+
+        expect(response).to be_success
+      end
+
+      it 'should remove all words' do
+        expect {
+          do_delete
+        }.to change(Word, :count).by(-3)
+      end
+
+      def do_delete
+        delete '/api/v1/words.json'
+      end
+    end
+  end
 end

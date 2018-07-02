@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       resources :words, param: :word, only: [:create, :destroy] do
         collection do
           delete :destroy
+          get :analytics
         end
       end
 

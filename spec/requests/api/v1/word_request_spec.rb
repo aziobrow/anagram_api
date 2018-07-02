@@ -62,7 +62,7 @@ describe Api::V1::WordsController do
   end
 
   describe 'DELETE #destroy' do
-    describe 'when deleting one word' do
+    context 'when deleting one word' do
       let!(:word_to_delete) { FactoryBot.create(:word) }
 
       it 'should respond successfully' do
@@ -82,7 +82,7 @@ describe Api::V1::WordsController do
       end
     end
 
-    describe 'when deleting all words' do
+    context 'when deleting all words' do
       let!(:words_to_delete) { FactoryBot.create_list(:word, 3) }
 
       it 'should respond successfully' do
@@ -99,6 +99,38 @@ describe Api::V1::WordsController do
 
       def do_delete
         delete '/api/v1/words.json'
+      end
+    end
+  end
+
+  describe 'GET #analytics' do
+    context 'when no words exist' do
+      before { get '/api/v1/words/analytics.json' }
+
+      it 'should respond successfully' do
+        expect(response).to be_success
+      end
+
+      it 'should return appropriate json' do
+        message = JSON.parse(response.body)
+
+        expect(message).to eq('total_words' => 0)
+      end
+    end
+
+    context 'when words exist' do
+      before { FactoryBot.create(:word) }
+      before { get '/api/v1/words/analytics.json' }
+
+      it 'should respond successfully' do
+        expect(response).to be_success
+      end
+
+      it 'should return appropriate json' do
+        message = JSON.parse(response.body)
+
+        expect(message['analytics'].keys).to include('total_words', 'word_length')
+        expect(message['analytics']['word_length'].keys).to include('minimum', 'maximum', 'median', 'average')
       end
     end
   end

@@ -8,6 +8,7 @@ class Api::V1::AnagramsController < ApplicationController
     return unless result.present?
     result.delete(params[:word])
     result = result.first(params[:limit].to_f) if params[:limit]
+
     render json: {
       anagrams: result
     }

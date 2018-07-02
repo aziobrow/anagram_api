@@ -8,7 +8,7 @@ class WordsCreator
 
   def create_words!(words)
     words.each do |word|
-      result = DictionaryInitializer.add_word(word)
+      result = DictionaryBuilder.add_word(word)
       if result.persisted?
         successes << result
       else

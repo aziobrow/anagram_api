@@ -16,11 +16,12 @@ class Api::V1::WordsController < ApplicationController
     if params[:word]
       Word.find(params[:word]).delete
     else
-      loops = (Word.total_count / 1000).ceil
+      loops = (Word.all.size / 1000.0).ceil
 
     	loops.times do |loop|
   	    Word.limit(1000).delete_all
   	  end
+    end
   end
 
   def analytics

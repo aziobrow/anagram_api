@@ -13,13 +13,13 @@ This project is built with Rails::API, a PostgreSQL database, and RSpec for test
 - `rake db:setup`
 - `rake db:create db:migrate`
 
-If you'd like to run the Ibotta-provided anagram_client test suite, please do so before taking the next step to load the dictionary.  I made the choice to utilize a uniqueness validation on words in the dictionary (because after all, dictionaries don't repeat words), and the setup of the test suite will attempt to post duplicate words each time. Also for that reason, the first test of that suite is skipped, because it attempts to re-post the same words that are created in the test setup.
+If you'd like to run the Ibotta-provided anagram_client test suite, please do so before taking the next step to load the dictionary.  I made the choice to utilize a uniqueness validation on words in the dictionary (because after all, dictionaries don't repeat words), and the setup of the test suite will attempt to post duplicate words each time. Also for that reason, the first test of that suite is skipped, because it attempts to recreate the same words that are created in the test setup.
 
-- If you'd like to load the default dictionary with all 200K+ words, run `rake initialize_dictionary`. Please be advised that doing so takes a significant amount of time. As an alternative, you may also choose to load a fixture file with 100 words by running `rake initialize_fixture_dictionary`.
+- If you'd like to load the default dictionary with all 200K+ words, run `rake initialize_dictionary`. Please be advised that doing so requires a significant amount of time. As an alternative, you may also choose to load a fixture file with 50 words by running `rake initialize_fixture_dictionary`.
 
 # Special Considerations
 
-I chose to make `Word` the underpinning model for this project in order to protect the integrity of the data. Words are case-insensitively validated (e.g., you cannot add both 'Test' and 'test' to the database), and no special characters are allowed (e.g. 'test!').  Using the `Word` model also allowed me to utilized some convenient tools for filtering, deleting, etc.
+I chose to make `Word` the underpinning model for this project in order to protect the integrity of the data. Words are case-insensitively validated (e.g., you cannot add both 'Test' and 'test' to the database), and no special characters are allowed (e.g. 'test!'). Whitespace is also not supported at this time (e.g., 'this test'), although that might be an interesting feature for anagrams in the future. Using the `Word` model also allowed me to utilize some convenient tools for filtering, deleting, etc.
 
 # Organization
 

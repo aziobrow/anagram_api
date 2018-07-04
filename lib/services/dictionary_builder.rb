@@ -5,8 +5,8 @@ class DictionaryBuilder
     File.open(txt_file). each do |line|
       Word.create(word: line.strip)
 
-      puts "Word #{count} created"
       count += 1
+      puts "Word #{count} created"
     end
   end
 

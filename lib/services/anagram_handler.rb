@@ -13,4 +13,8 @@ class AnagramHandler
       result.delete(word)
     end
   end
+
+  def most_anagrams
+    anagrams.sort_by{|_k,v| v.length}.last(1).to_h.values.flatten
+  end
 end

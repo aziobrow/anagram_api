@@ -2,6 +2,7 @@ class Api::V1::AnagramsController < ApplicationController
   before_action :load_handler
 
   def show
+    @anagrams.delete(params[:word])
     @anagrams = @anagrams.first(params[:limit].to_f) if params[:limit]
 
     render json: {
@@ -10,9 +11,7 @@ class Api::V1::AnagramsController < ApplicationController
   end
 
   def destroy
-    words_to_delete = @anagrams << params[:word]
-
-    Word.where(word: words_to_delete).delete_all
+    Word.where(word: @anagrams).delete_all
   end
 
   private

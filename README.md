@@ -27,7 +27,7 @@ The project is organized into two separate controllers--one to serve endpoints r
 
 `{["a", "d", "e", "r"]=>["dear", "read"]}`
 
-There are also three PORO services:
+There are also three PORO services, largely intended to encapsulate logic and clean up the controllers:
 - AnagramHandler: navigates the aforementioned hash to return desired output to the controller
 - DictionaryBuilder: converts a text file into rows of words in the database.  This could have been done in the seed file, but I was considering what might be more broadly useful in terms of flexibility.
 - WordsCreator: handles the work of creating words. I chose this route because of the nature of the requirements for creating new words, which implied batch posting.  I wanted to ensure that 1) a user couldn't post partial data, and 2) rather than returning a generic 400 response in which the user would be unsure as to what failed and why, I wanted to notify the user about the specific word/s that failed as well as the associated errors.

@@ -8,7 +8,14 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :anagrams, param: :word, only: [:show]
+      resources :anagrams, param: :word, only: [:show] do
+        collection do
+          get :groups
+          get :verify_set
+        end
+
+        delete :destroy, on: :member
+      end
     end
   end
 end

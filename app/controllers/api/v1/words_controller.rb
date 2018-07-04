@@ -13,11 +13,7 @@ class Api::V1::WordsController < ApplicationController
   end
 
   def destroy
-    if params[:word].present?
-      Word.find(params[:word]).delete
-    else
-      Word.batch_delete
-    end
+    params[:word].present? ? Word.find(params[:word]).delete : Word.batch_delete
   end
 
   def analytics

@@ -19,7 +19,7 @@ describe Api::V1::AnagramsController do
         it 'returns all anagrams for that word' do
           anagrams = JSON.parse(response.body)['anagrams']
 
-          expect(anagrams.count).to eq(2)
+          expect(anagrams.size).to eq(2)
           expect(anagrams).to include('dear', 'dare')
           expect(anagrams).not_to include('read')
         end
@@ -35,7 +35,7 @@ describe Api::V1::AnagramsController do
         it 'returns limited anagrams for that word' do
           anagrams = JSON.parse(response.body)['anagrams']
 
-          expect(anagrams.count).to eq(1)
+          expect(anagrams.size).to eq(1)
           expect(anagrams).not_to include('read')
         end
 
@@ -45,7 +45,7 @@ describe Api::V1::AnagramsController do
           it 'returns all anagrams for that word' do
             anagrams = JSON.parse(response.body)['anagrams']
 
-            expect(anagrams.count).to eq(2)
+            expect(anagrams.size).to eq(2)
             expect(anagrams).to include('dear', 'dare')
             expect(anagrams).not_to include('read')
           end

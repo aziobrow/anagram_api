@@ -10,7 +10,6 @@ class AnagramHandler
 
     anagrams[word_chars].tap do |result|
       return [] unless result.present?
-      result.delete(word)
     end
   end
 
@@ -20,5 +19,11 @@ class AnagramHandler
 
   def anagram_groups_of_x_size(size)
     anagrams.values.select { |group| group.length >= size }
+  end
+
+  def anagrams?(words)
+    # (words - find_anagrams(words.first)).empty?
+    sorted = words.map {|word| word.downcase.chars.sort }
+    sorted.uniq.length == 1
   end
 end

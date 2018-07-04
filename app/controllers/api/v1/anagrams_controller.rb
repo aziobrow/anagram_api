@@ -17,6 +17,6 @@ class Api::V1::AnagramsController < ApplicationController
   private
 
   def load_handler
-    @anagrams = AnagramHandler.new.find_anagrams(params[:word])
+    @anagrams = AnagramHandler.new.find_anagram_group(params[:word])
   end
 end

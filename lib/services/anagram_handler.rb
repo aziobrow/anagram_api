@@ -15,6 +15,10 @@ class AnagramHandler
   end
 
   def most_anagrams
-    anagrams.sort_by{|_k,v| v.length}.last(1).to_h.values.flatten
+    anagrams.values.sort.last
+  end
+
+  def anagram_groups_of_x_size(size)
+    anagrams.values.select { |group| group.length >= size }
   end
 end

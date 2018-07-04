@@ -3,7 +3,7 @@ class DictionaryBuilder
     count = 0
 
     File.open(txt_file). each do |line|
-      Word.create(word: line.strip.downcase)
+      Word.create(word: line.strip)
 
       puts "Word #{count} created"
       count += 1
@@ -11,6 +11,6 @@ class DictionaryBuilder
   end
 
   def self.add_word(word)
-    Word.create(word: word.downcase)
+    Word.create(word: word)
   end
 end

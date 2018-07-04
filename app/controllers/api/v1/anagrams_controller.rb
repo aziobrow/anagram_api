@@ -1,11 +1,11 @@
 class Api::V1::AnagramsController < ApplicationController
   def show
-    result = AnagramHandler.new.find_anagrams(params[:word])
+    anagrams = AnagramHandler.new.find_anagrams(params[:word])
 
-    result = result.first(params[:limit].to_f) if params[:limit]
+    anagrams = anagrams.first(params[:limit].to_f) if params[:limit]
 
     render json: {
-      anagrams: result
+      anagrams: anagrams
     }
   end
 end

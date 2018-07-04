@@ -9,13 +9,6 @@ describe DictionaryBuilder do
         subject.create_dictionary('spec/fixtures/test_words.txt')
       }.to change(Word, :count).from(0).to(3)
     end
-
-    it "converts words to lowercase" do
-      subject.create_dictionary('spec/fixtures/test_words.txt')
-
-      expect(Word.pluck(:word)).to include('zebra')
-      expect(Word.pluck(:word)).not_to include('Zebra')
-    end
   end
 
   describe '.add_word' do
@@ -25,26 +18,33 @@ describe DictionaryBuilder do
           subject.add_word('test')
         }.to change(Word, :count).by(1)
       end
-
-      context 'when word has uppercase chars' do
-        it 'converts word to downcase' do
-          subject.add_word('TEST')
-
-          expect(Word.count).to eq(1)
-          expect(Word.pluck(:word)).to include('test')
-        end
-      end
     end
 
     context 'with invalid word' do
-      it 'does not persist invalid word' do
+      it 'does not persist word with invalid chars' do
         expect {
           subject.add_word('test1')
         }.not_to change(Word, :count)
       end
 
-      it 'does not persist duplicate word' do
+      it 'does not persist exact duplicate word' do
         subject.add_word('test')
+
+        expect {
+          subject.add_word('test')
+        }.not_to change(Word, :count)
+      end
+
+      it 'does not persist uppercase duplicate word' do
+        subject.add_word('test')
+
+        expect {
+          subject.add_word('Test')
+        }.not_to change(Word, :count)
+      end
+
+      it 'does not persist lowercase duplicate word' do
+        subject.add_word('Test')
 
         expect {
           subject.add_word('test')

@@ -1,14 +1,18 @@
 class Word < ApplicationRecord
   validates :word, presence: true
-  validates :word, uniqueness: true
+  validates :word, uniqueness: { case_sensitive: false }
 
-  validate :downcase
   validate :letters_only
 
   def self.find(input)
     input.to_i == 0 ? find_by_word(input) : super
   end
 
+  def self.batch_delete
+    batch_count = (all.size / 1000.0).ceil
+
+    batch_count.times { |loop| Word.limit(1000).delete_all }
+  end
 
   def self.word_length_calc(metric)
     return self.median_word_length if metric == 'MED'
@@ -16,12 +20,6 @@ class Word < ApplicationRecord
   end
 
   private
-
-  def downcase
-    return if word.present? && word == word.downcase
-
-    errors.add(:word, 'must be lowercase')
-  end
 
   def letters_only
     return if word.present? && word[/[a-zA-Z]+/] == word

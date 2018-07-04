@@ -19,12 +19,8 @@ RSpec.describe Word, type: :model do
       end
     end
 
-    it { should validate_uniqueness_of(:word) }
+    it { should validate_uniqueness_of(:word).case_insensitive }
     it { should validate_presence_of(:word) }
-
-    context 'when word includes uppercase letters' do
-      it_behaves_like 'an invalid word', 'teSt'
-    end
 
     context 'when word includes numbers' do
       it_behaves_like 'an invalid word', 'test1'
@@ -39,13 +35,26 @@ RSpec.describe Word, type: :model do
     end
   end
 
+  describe '.find' do
+    let(:word) { FactoryBot.create(:word) }
+
+    context 'when input is a word' do
+      it 'finds by word' do
+        expect(Word.find(word.word)).to eq(word)
+      end
+    end
+
+    context 'when input is an integer' do
+      it 'finds by id' do
+        expect(Word.find(word.id)).to eq(word)
+      end
+    end
+  end
+
   describe 'word length calculations' do
     before do
       word = 'a'
-      4.times do
-        FactoryBot.create(:word, word: word)
-        word += 'a'
-      end
+      4.times { FactoryBot.create(:word, word: word); word += 'a' }
     end
 
     describe '.median_word_length' do
@@ -57,6 +66,23 @@ RSpec.describe Word, type: :model do
         FactoryBot.create(:word, word: 'aaaaa')
 
         expect(Word.median_word_length).to eq(3)
+      end
+    end
+
+    describe '.batch_delete' do
+      it 'deletes all words in small collection' do
+        FactoryBot.create_list(:word, 3)
+        Word.batch_delete
+
+        expect(Word.all.size).to eq(0)
+      end
+
+      it 'deletes all words in large collection' do
+        allow_any_instance_of(Word).to receive(:valid?).and_return(true)
+        FactoryBot.create_list(:word, 1001, word: 'test')
+        Word.batch_delete
+
+        expect(Word.all.size).to eq(0)
       end
     end
 

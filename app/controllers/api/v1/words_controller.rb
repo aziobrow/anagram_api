@@ -16,7 +16,11 @@ class Api::V1::WordsController < ApplicationController
     if params[:word]
       Word.find(params[:word]).delete
     else
-      Word.destroy_all
+      loops = (Word.all.size / 1000.0).ceil
+
+    	loops.times do |loop|
+  	    Word.limit(1000).delete_all
+  	  end
     end
   end
 
@@ -25,19 +29,14 @@ class Api::V1::WordsController < ApplicationController
 
     return render json: { total_words: 0 } if total.zero?
 
-    min = Word.pluck('MIN(LENGTH(word))').first
-    max = Word.pluck('MAX(LENGTH(word))').first
-    median = 10
-    avg = Word.pluck('AVG(LENGTH(word))').first
-
     render json: {
       analytics:  {
         total_words: total,
         word_length:  {
-          minimum: min,
-          maximum: max,
-          median: median,
-          average: avg
+          minimum: Word.word_length_calc('MIN'),
+          maximum: Word.word_length_calc('MAX'),
+          median: Word.word_length_calc('MED'),
+          average: Word.word_length_calc('AVG')
         }
       }
     }

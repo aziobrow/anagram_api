@@ -7,11 +7,10 @@ class AnagramHandler
 
   def find_anagrams(word)
     word_chars = word.downcase.chars.sort
-    result = anagrams[word_chars]
 
-    return [] unless result.present?
-
-    result.delete(word)
-    result
+    anagrams[word_chars].tap do |result|
+      return [] unless result.present?
+      result.delete(word)
+    end
   end
 end

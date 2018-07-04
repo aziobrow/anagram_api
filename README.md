@@ -8,10 +8,10 @@ This API is intended to build a dictionary of words, defaulting to a bank of 200
 This project is built with Rails::API, a PostgreSQL database, and RSpec for testing in order to demonstrate my range within the Ruby/Rails environment.
 
 # Setup
--Clone repository
--`bundle` to install dependencies
--`rake db:setup`
--`rake db:create db:migrate`
+- Clone repository
+- `bundle` to install dependencies
+- `rake db:setup`
+- `rake db:create db:migrate`
 
 If you'd like to run the Ibotta-provided anagram_client test suite, please do so before taking the next step to load the dictionary.  I made the choice to utilize a uniqueness validation on words in the dictionary (because after all, dictionaries don't repeat words), and the setup of the test suite will attempt to post duplicate words each time. Also for that reason, the first test of that suite is skipped, because it attempts to re-post the same words that are created in the test setup.
 
@@ -30,7 +30,7 @@ The project is organized into two separate controllers--one to serve endpoints r
 There are also three PORO services:
 - AnagramHandler: navigates the aforementioned hash to return desired output to the controller
 - DictionaryBuilder: converts a text file into rows of words in the database.  This could have been done in the seed file, but I was considering what might be more broadly useful in terms of flexibility.
-- WordsCreator: handles the work of creating words. I chose this route because of the nature of the requirements for creating new words, which implied batch posting.  I wanted to ensure that 1) a user couldn't post partial data, and 2) rather than returning a generic 400 response in which the user would be unsure as to what failed and why, I wanted to notify the user about the specific word/s that failed as well as the associated errors. 
+- WordsCreator: handles the work of creating words. I chose this route because of the nature of the requirements for creating new words, which implied batch posting.  I wanted to ensure that 1) a user couldn't post partial data, and 2) rather than returning a generic 400 response in which the user would be unsure as to what failed and why, I wanted to notify the user about the specific word/s that failed as well as the associated errors.
 
 # Endpoints
 

@@ -5,16 +5,16 @@ class AnagramHandler
     @anagrams = Word.pluck(:word).group_by { |word| word.downcase.chars.sort }
   end
 
-  def find_anagrams(word)
+  def find_anagram_group(word)
     word_chars = word.downcase.chars.sort
 
-    anagrams[word_chars].tap do |result|
-      return [] unless result.present?
-    end
+    anagrams[word_chars].tap { |result| return [] unless result.present? }
   end
 
   def most_anagrams
-    anagrams.values.sort.last
+    largest_group = anagrams.values.sort_by { |group| group.length }[-1]
+
+    largest_group.tap { |group| return [] unless largest_group.present? && largest_group.size > 1 }
   end
 
   def anagram_groups_of_x_size(size)
@@ -22,6 +22,7 @@ class AnagramHandler
   end
 
   def anagrams?(words)
+    return false unless words.present? && words.size > 1
     # (words - find_anagrams(words.first)).empty?
     sorted = words.map {|word| word.downcase.chars.sort }
     sorted.uniq.length == 1

@@ -13,4 +13,8 @@ class AnagramHandler
       result.delete(word)
     end
   end
+
+  def anagrams?(words)
+    find_anagrams(words.delete(words.first)).include?(words)
+  end
 end

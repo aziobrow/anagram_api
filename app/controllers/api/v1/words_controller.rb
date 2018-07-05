@@ -8,7 +8,7 @@ class Api::V1::WordsController < ApplicationController
     #if any words in batch raise errors during creation attempt, transaction will roll back and no words will be created
     ActiveRecord::Base.transaction do
       creator.create_words!(word_params)
-      render json: creator.successes
+      render status: :created, json: creator.successes
     end
 
   rescue StandardError

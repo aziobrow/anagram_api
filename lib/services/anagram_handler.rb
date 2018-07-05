@@ -11,20 +11,19 @@ class AnagramHandler
     anagrams[word_chars].tap { |result| return [] unless result.present? }
   end
 
-  def most_anagrams
-    largest_group = anagrams.values.sort_by { |group| group.length }[-1]
+  def most_anagrams(limit)
+    largest_group = anagrams.values.group_by(&:length)
 
-    largest_group.tap { |group| return [] unless largest_group.present? && largest_group.size > 1 }
-  end
+    return [] unless largest_group.present? && largest_group.first[0] > 1
 
-  def anagram_groups_of_x_size(size)
-    anagrams.values.select { |group| group.length >= size }
+    limit == 1 ? largest_group.max.last : largest_group.select { |k,_v| k >= limit }.values.flatten(1)
   end
 
   def anagrams?(words)
     return false unless words.present? && words.size > 1
-    # (words - find_anagrams(words.first)).empty?
+
     sorted = words.map {|word| word.downcase.chars.sort }
+
     sorted.uniq.length == 1
   end
 end

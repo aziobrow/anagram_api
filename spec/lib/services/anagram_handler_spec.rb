@@ -34,36 +34,71 @@ describe AnagramHandler do
   end
 
   describe '#most_anagrams' do
-    it 'returns the anagram group with the most anagrams' do
-      expect(subject.most_anagrams).to match_array(['dear', 'dare', 'read'])
-    end
+    context 'when top results are limited to one' do
+      let(:results) { subject.most_anagrams(1) }
 
-    context 'when no anagrams are found' do
-      it 'returns empty array when no words exist' do
-        allow(subject).to receive(:anagrams).and_return({ ['e', 's', 't', 't'] => ['test'] })
-
-        expect(subject.most_anagrams).to be_empty
+      it 'returns the anagram group with the most anagrams' do
+        expect(results.count).to eq(1)
+        expect(results.first).to match_array(['dear', 'dare', 'read'])
       end
 
-      it 'returns empty array when no words have anagram' do
-        allow(subject).to receive(:anagrams).and_return({})
+      it 'returns multiple anagram groups when largest group size is a tie' do
+        FactoryBot.create(:word, word: 'sett')
+        FactoryBot.create(:word, word: 'estt')
 
-        expect(subject.most_anagrams).to be_empty
+        expect(results.count).to eq(2)
+
+        expect(results.first).to match_array(['dear', 'dare', 'read'])
+        expect(results.last).to match_array(['test', 'estt', 'sett'])
+      end
+
+      context 'when no anagrams are found' do
+        it 'returns empty array when no words exist' do
+          allow(subject).to receive(:anagrams).and_return({ ['e', 's', 't', 't'] => ['test'] })
+
+          expect(results).to be_empty
+        end
+
+        it 'returns empty array when no words have anagrams' do
+          allow(subject).to receive(:anagrams).and_return({})
+
+          expect(results).to be_empty
+        end
       end
     end
-  end
 
-  describe '#anagram_groups_of_x_size' do
-    it 'returns anagram groups equal to that size' do
-      expect(subject.anagram_groups_of_x_size(3)).to match_array([['read', 'dear', 'dare']])
-    end
+    context 'when top results are given specific size' do
+      it 'returns anagram groups equal to that size' do
+        expect(subject.most_anagrams(3)).to match_array([['read', 'dear', 'dare']])
+      end
 
-    it 'returns anagram groups equal to and larger than that size' do
-      expect(subject.anagram_groups_of_x_size(1)).to match_array([['read', 'dear', 'dare'], ['test']])
-    end
+      it 'returns anagram groups equal to and larger than that size' do
+        FactoryBot.create(:word, word: 'estt')
 
-    it 'returns empty array when no groups are equal to or larger than that size' do
-      expect(subject.anagram_groups_of_x_size(5)).to be_empty
+        result = subject.most_anagrams(2)
+
+        expect(result.count).to eq(2)
+        expect(result.first).to match_array(['read', 'dear', 'dare'])
+        expect(result.last).to match_array(['test', 'estt'])
+      end
+
+      it 'returns empty array when no groups are equal to or larger than that size' do
+        expect(subject.most_anagrams(5)).to be_empty
+      end
+
+      context 'when no anagrams are found' do
+        it 'returns empty array when no words exist' do
+          allow(subject).to receive(:anagrams).and_return({ ['e', 's', 't', 't'] => ['test'] })
+
+          expect(subject.most_anagrams(2)).to be_empty
+        end
+
+        it 'returns empty array when no words have anagrams' do
+          allow(subject).to receive(:anagrams).and_return({})
+
+          expect(subject.most_anagrams(2)).to be_empty
+        end
+      end
     end
   end
 

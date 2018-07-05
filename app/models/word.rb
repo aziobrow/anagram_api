@@ -4,6 +4,8 @@ class Word < ApplicationRecord
 
   validate :letters_only
 
+  scope :lowercase, -> { where('word = lower(word)') }
+
   def self.find(input)
     input.to_i == 0 ? find_by_word(input) : super
   end

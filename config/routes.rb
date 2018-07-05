@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
       resources :anagrams, param: :word, only: [:show] do
         collection do
-          get :groups
+          get :top_results
           get :verify_set
         end
 

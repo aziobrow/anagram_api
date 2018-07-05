@@ -53,8 +53,8 @@ The following endpoints are supported:
   - Returns a JSON array of English-language words that are anagrams of the word passed in the URL
   - Supports an optional query param that indicates the maximum number of results to return.
 
-- `GET /api/v1/anagrams/groups`
-  - Endpoint that supports a query param identifying words with the most anagrams
+- `GET /api/v1/anagrams/top_results`
+  - Returns the words that have the most anagrams (e.g., the largest anagram group)
   - Also supports a query param that will return all anagram groups of size >= *x*
 
 - `DELETE /api/v1/anagrams/:word`
@@ -70,8 +70,28 @@ The following endpoints are supported:
 ```{bash}
 # Adding words to the corpus
 $ curl -i -X POST -d '{ "words": ["read", "dear", "dare"] }' http://localhost:3000/api/v1/words.json
-HTTP/1.1 201 Created
+HTTP/1.1 200 OK
 ...
+[
+  {
+    id: 31507,
+    word: "read",
+    created_at: 2018-07-05T02:49:38.513Z,
+    updated_at: 2018-07-05T02:49:38.513Z
+  },
+  {
+    id: 31508,
+    word: "dear",
+    created_at: 2018-07-05T02:49:38.527Z,
+    updated_at: 2018-07-05T02:49:38.527Z
+  },
+  {
+    id: 31509,
+    word: dare,
+    created_at: 2018-07-05T02:49:38.535Z,
+    updated_at: 2018-07-05T02:49:38.535Z
+  }
+]
 
 # Fetching anagrams
 $ curl -i http://localhost:3000/api/v1/anagrams/read.json
@@ -90,7 +110,7 @@ HTTP/1.1 200 OK
 ...
 {
   anagrams: [
-    "dare"
+    "dear"
   ]
 }
 
@@ -109,43 +129,49 @@ $ curl -i http://localhost:3000/api/v1/words/analytics.json
 HTTP/1.1 200 OK
 ...
 {
-  anagrams: [
-    "dare"
-  ]
+  analytics: {
+    total_words: 3,
+    word_length: {
+      minimum: 4,
+      maximum: 4,
+      median: 4.0,
+      average: 4.0
+    }
+  }
 }
 
-# Get words with most anagrams
-$ curl -i http://localhost:3000/api/v1/words/group?largest=true.json
+# Get words with most anagrams (top anagram group)
+$ curl -i http://localhost:3000/api/v1/anagrams/top_results.json
 HTTP/1.1 200 OK
 ...
 {
-  anagrams: [
-    "dare"
+  top_results: [
+    ["read", "dear", "dare"]
   ]
 }
 
-# Get words with at least x number of anagrams
-$ curl -i http://localhost:3000/api/v1/words/group?min_size=2.json
+# Get anagram groups of size greater than or equal to x
+$ curl -i http://localhost:3000/api/v1/anagrams/top_results.json?min_size=2
 HTTP/1.1 200 OK
 ...
 {
-  anagrams: [
-    "dare"
+  top_results: [
+    ["read", "dear", "dare"],
+    ["on", "no"]
   ]
 }
 
 # Get verification as to whether a set of provided words are all anagrams to each other
-$ curl -i -g http://localhost:3000/api/v1/anagrams/verify_set?"words[]=read&words[]=dear&words[]=dare".json
+$ curl -i -g http://localhost:3000/api/v1/anagrams/verify_set.json?"words[]=read&words[]=dear&words[]=dare"
 HTTP/1.1 200 OK
 ...
 {
-  anagrams: [
-    "dare"
-  ]
+  anagrams?:
+    true
 }
 
 # Delete a word and all its anagrams
-$ curl -i -X DELETE http://localhost:3000/api/v1/anagrams/:word.json
+$ curl -i -X DELETE http://localhost:3000/api/v1/anagrams/read.json
 HTTP/1.1 204 No Content
 ...
 ```

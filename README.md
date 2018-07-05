@@ -10,7 +10,7 @@ This project is built with Rails::API, a PostgreSQL database, and RSpec for test
 
 All optional endpoints have been implemented, although query param to exclude proper nouns is limited in the sense that it must be the only query param and only works on the `/api/v1/anagrams/:word` route, simply because of time constraints.  Given more time, I'd like to expand this to work on all anagram routes and with multiple query params.
 
-Logic was implemented with the most efficient code that occurred to me while writing it. I expect that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points. As a note, I also took a few liberties as I was building the API. For example, after POSTing a new word, I opted to return either the word objects that were created or the errors for each word that failed, rather than the 201 that was originally documented.  I also decided to use versioned routes.
+Logic was implemented with the most efficient code that occurred to me while writing it. I expect that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points. As a note, I also took a few liberties as I was building the API. For example, after POSTing a new word, I opted to return either the word objects that were created or the errors for each word that failed, rather than the 201 that was originally documented.  I also decided to use versioned routes.  I wanted to add more elegant error handling to the delete to notify the user if there were any errors in deletion, but didn't quite get there.
 
 For context, I began this project on Saturday, June 30th and finished on Wednesday, July 4th.  
 
@@ -80,7 +80,7 @@ The following endpoints are supported:
 ```{bash}
 # Adding words to the corpus
 $ curl -i -X POST -d '{ "words": ["read", "Dear", "dare"] }' http://localhost:3000/api/v1/words.json
-HTTP/1.1 200 OK
+HTTP/1.1 201  Created
 ...
 [
   {

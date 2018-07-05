@@ -35,6 +35,23 @@ RSpec.describe Word, type: :model do
     end
   end
 
+  describe 'scopes' do
+    describe '.lowercase' do
+      before do
+        FactoryBot.create(:word, word: 'Read')
+        FactoryBot.create(:word, word: 'dear')
+        FactoryBot.create(:word, word: 'dare')
+      end
+
+      it 'filters out proper nouns' do
+        words = Word.lowercase.pluck(:word)
+
+        expect(words).to include('dear', 'dare')
+        expect(words).not_to include('Read')
+      end
+    end
+  end
+
   describe '.find' do
     let(:word) { FactoryBot.create(:word) }
 

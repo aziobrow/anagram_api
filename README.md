@@ -74,7 +74,7 @@ The following endpoints are supported:
 
 ```{bash}
 # Adding words to the corpus
-$ curl -i -X POST -d '{ "words": ["read", "dear", "dare"] }' http://localhost:3000/api/v1/words.json
+$ curl -i -X POST -d '{ "words": ["read", "Dear", "dare"] }' http://localhost:3000/api/v1/words.json
 HTTP/1.1 200 OK
 ...
 [
@@ -86,7 +86,7 @@ HTTP/1.1 200 OK
   },
   {
     id: 31508,
-    word: "dear",
+    word: "Dear",
     created_at: 2018-07-05T02:49:38.527Z,
     updated_at: 2018-07-05T02:49:38.527Z
   },
@@ -125,7 +125,7 @@ HTTP/1.1 200 OK
 ...
 {
   anagrams: [
-    "dear"
+    "Dear"
   ]
 }
 
@@ -161,7 +161,7 @@ HTTP/1.1 200 OK
 ...
 {
   top_results: [
-    ["read", "dear", "dare"]
+    ["read", "Dear", "dare"]
   ]
 }
 
@@ -171,7 +171,7 @@ HTTP/1.1 200 OK
 ...
 {
   top_results: [
-    ["read", "dear", "dare"],
+    ["read", "Dear", "dare"],
     ["on", "no"]
   ]
 }

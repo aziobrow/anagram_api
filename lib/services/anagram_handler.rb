@@ -1,8 +1,9 @@
 class AnagramHandler
   attr_reader :anagrams
 
-  def initialize
-    @anagrams = Word.pluck(:word).group_by { |word| word.downcase.chars.sort }
+  def initialize(proper_nouns = true)
+    eligible_words = proper_nouns ? Word.all : Word.lowercase
+    @anagrams = eligible_words.pluck(:word).group_by { |word| word.downcase.chars.sort }
   end
 
   def find_anagram_group(word)

@@ -17,9 +17,9 @@ class Api::V1::AnagramsController < ApplicationController
   end
 
   def top_results
-    limit = params[:min_size].to_i || 1
+    limit = params[:min_size] ||= 1
 
-    most_anagrams = @handler.most_anagrams(limit)
+    most_anagrams = @handler.most_anagrams(limit.to_i)
 
     render json: { top_results: most_anagrams }
   end
@@ -33,6 +33,7 @@ class Api::V1::AnagramsController < ApplicationController
   private
 
   def load_handler
-    @handler ||= AnagramHandler.new
+    proper_nouns_enabled = params[:proper_nouns] == 'false' ? false : true
+    @handler ||= AnagramHandler.new(proper_nouns_enabled)
   end
 end

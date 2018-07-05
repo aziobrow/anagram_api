@@ -10,7 +10,7 @@ This project is built with Rails::API, a PostgreSQL database, and RSpec for test
 
 All optional endpoints have been implemented, although query param to exclude proper nouns is limited in the sense that it must be the only query param and only works on the `/api/v1/anagrams/:word` route, simply because of time constraints.  Given more time, I'd like to expand this to work on all anagram routes and with multiple query params.
 
-Most logic was implemented with the most efficient code that occurred to me while writing it. I expect that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points. I also took a few liberties as I was building the API. For example, after POSTing a new word, I opted to return either the word objects that were created or the errors for each word that failed, rather than the 201 that was originally documented.  I also decided to use versioned routes.
+Logic was implemented with the most efficient code that occurred to me while writing it. I expect that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points. As a note, I also took a few liberties as I was building the API. For example, after POSTing a new word, I opted to return either the word objects that were created or the errors for each word that failed, rather than the 201 that was originally documented.  I also decided to use versioned routes.
 
 For context, I began this project on Saturday, June 30th and finished on Wednesday, July 4th.  
 
@@ -23,6 +23,8 @@ For context, I began this project on Saturday, June 30th and finished on Wednesd
 If you'd like to run the Ibotta-provided anagram_client test suite, please do so before taking the next step to load the dictionary.  I made the choice to utilize a uniqueness validation on words in the dictionary (because after all, dictionaries don't repeat words), and the setup of the test suite will attempt to post duplicate words each time. Also for that reason, the first test of that suite is skipped, because it attempts to recreate the same words that are created in the test setup.
 
 - If you'd like to load the default dictionary with all 200K+ words, run `rake initialize_dictionary`. Please be advised that doing so requires a significant amount of time. As an alternative, you may also choose to load a fixture file with 50 words by running `rake initialize_fixture_dictionary`.
+
+- `rails s`
 
 # Special Considerations
 

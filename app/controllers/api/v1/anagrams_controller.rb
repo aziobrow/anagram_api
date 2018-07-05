@@ -1,5 +1,5 @@
 class Api::V1::AnagramsController < ApplicationController
-  before_action :load_handler, only: [:show, :destroy]
+  before_action :load_handler
 
   def show
     anagrams = @handler.find_anagram_group(params[:word])
@@ -16,16 +16,12 @@ class Api::V1::AnagramsController < ApplicationController
     render json: { anagrams?: @handler.anagrams?(params[:words]) }
   end
 
-  def groups
-    if params[:largest]
-      largest_group = @handler.most_anagrams if params[:largest]
-      render json: { words_with_most_anagrams: largest_group }
-    elsif params[:size]
-      eligible_groups = @handler.anagram_groups_of_x_size(params[:size].to_i)
-      render json: { eligible_groups: eligible_groups }
-    else
-      render status: :unprocessable_entity
-    end
+  def top_results
+    limit = params[:min_size].to_i || 1
+
+    most_anagrams = @handler.most_anagrams(limit)
+
+    render json: { top_results: most_anagrams }
   end
 
   def destroy

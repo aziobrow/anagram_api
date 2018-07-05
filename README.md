@@ -11,6 +11,8 @@ All optional endpoints have been implemented, although query param to exclude pr
 
 Most logic was implemented with the most efficient code that occurred to me while writing it. I'm confident that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points.
 
+For context, I began this project on Saturday, June 30th and finished on Wednesday, July 4th.
+
 # Setup
 - Clone repository
 - `bundle` to install dependencies

@@ -9,6 +9,8 @@ This project is built with Rails::API, a PostgreSQL database, and RSpec for test
 
 All optional endpoints have been implemented, although query param to exclude proper nouns is limited in the sense that it must be the only query param and only works on the `/api/v1/anagrams/:word` route, simply because of time constraints.  Given more time, I'd like to expand this to work on all anagram routes and with multiple query params.
 
+Most logic was implemented with the most efficient code that occurred to me while writing it. I'm confident that there's plenty of room for refactoring, especially as time became short, but if it gets to code review, I'd love feedback on those points.
+
 # Setup
 - Clone repository
 - `bundle` to install dependencies
@@ -21,7 +23,7 @@ If you'd like to run the Ibotta-provided anagram_client test suite, please do so
 
 # Special Considerations
 
-I chose to make `Word` the underpinning model for this project in order to protect the integrity of the data. Words are case-insensitively validated (e.g., you cannot add both 'Test' and 'test' to the database), and no special characters are allowed (e.g. 'test!'). Whitespace is also not supported at this time (e.g., 'this test'), although that might be an interesting feature for anagrams in the future. Using the `Word` model also allowed me to utilize some convenient tools for filtering, deleting, etc.
+I chose to make `Word` the backing model for this project in order to protect the integrity of the data. Words are case-insensitively validated (e.g., you cannot add both 'Test' and 'test' to the database), and no special characters are allowed (e.g. 'test!'). Whitespace is also not supported at this time (e.g., 'this test'), although that might be an interesting feature for anagrams in the future. Using the `Word` model also allowed me to utilize some convenient tools for filtering, deleting, etc.
 
 # Organization
 
@@ -58,7 +60,7 @@ The following endpoints are supported:
 
 - `GET /api/v1/anagrams/top_results`
   - Returns the words that have the most anagrams (e.g., the largest anagram group)
-  - Also supports a query param that will return all anagram groups of size >= *x*
+  - Supports an optional query param that will return all anagram groups of size >= *x*
 
 - `DELETE /api/v1/anagrams/:word`
   - Endpoint to delete a word *and all of its anagrams*

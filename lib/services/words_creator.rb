@@ -6,6 +6,7 @@ class WordsCreator
     @errors = []
   end
 
+  #intended to track each word in batch creation to log errors individually to notify the user with more detail
   def create_words!(words)
     words.each do |word|
       result = DictionaryBuilder.add_word(word)
@@ -18,6 +19,8 @@ class WordsCreator
         }
       end
     end
+    #this will be rescued in the controller and will trigger a rollback of the transaction wrapped around the batch creation
+    #errors will be rendered in the json response
     raise StandardError if errors.present?
   end
 end

@@ -10,6 +10,7 @@ class DictionaryBuilder
     end
   end
 
+  #this method probably isn't necessary, but I thought it might be a nice tool to expose the DictionaryBuilder in the future
   def self.add_word(word)
     Word.create(word: word)
   end
